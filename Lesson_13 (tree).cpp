@@ -280,20 +280,36 @@ public:
 
 private:
 
-	void ShowArrayTree(Node* element, int SIZE, int count_element = 0) const
+	void AddToTemp(Node* element, int *temp, int &count_element)
 	{
-		int *temp = new int[SIZE];
 		if (element != 0)
 		{
-			ShowArrayTree(element->left, SIZE);
+			AddToTemp(element->left, temp, count_element);
 			temp[count_element++] = element->ShowValueNode();
-			ShowArrayTree(element->right, SIZE);
+			AddToTemp(element->right, temp, count_element);
+		}
+
+	}
+
+
+	void BalancedTree(Node* element, int SIZE) 
+	{
+		int count_element = 0;
+		int* temp = new int[SIZE];
+		AddToTemp(element, temp, count_element);
+
+		for (int i = 0; i < SIZE; i++)
+		{
+			cout << "\n";
+			cout << temp[i];
 		}
 	
 		Clear (root);
 		BuildBalancedTree(temp, SIZE);
+		delete[]temp;
 
 	}
+
 	Node* BuildBalancedTree(int* temp,  int SIZE, int start = 0) {
 		if (start > SIZE) return nullptr;
 
@@ -312,9 +328,9 @@ private:
 
 
 public:
-	void ShowArrayTree(int SIZE) const
+	void BalancedTree(int SIZE) 
 	{
-		ShowArrayTree(root, SIZE);
+		BalancedTree(root, SIZE);
 	}
 
 //private:
@@ -342,7 +358,7 @@ int main()
 	for (int i = 0; i < SIZE; i++)
 		bt.AddNode(ar[i]);
 	bt.ShowTree();
-	bt.ShowArrayTree(SIZE);
+	bt.BalancedTree(SIZE);
 	
 
 
