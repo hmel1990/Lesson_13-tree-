@@ -20,6 +20,7 @@ public:
 		{
 			return value;
 		}
+
 	};
 
 private:
@@ -278,18 +279,17 @@ public:
 	//_____________________________________________________________________________________________________________________________________
 
 private:
-	void ShowArrayTree(Node* element, int SIZE) const
+
+	void ShowArrayTree(Node* element, int SIZE, int count_element = 0) const
 	{
 		int *temp = new int[SIZE];
 		if (element != 0)
 		{
-			for (int i = 0; i < SIZE; i++)
-			{
-				ShowArrayTree(element->left, SIZE);
-				temp[i] = element->ShowValueNode();
-				ShowArrayTree(element->right, SIZE);
-			}			
+			ShowArrayTree(element->left, SIZE);
+			temp[count_element++] = element->ShowValueNode();
+			ShowArrayTree(element->right, SIZE);
 		}
+	
 		Clear (root);
 		BuildBalancedTree(temp, SIZE);
 
@@ -298,10 +298,11 @@ private:
 		if (start > SIZE) return nullptr;
 
 		int mid = (start + SIZE) / 2;
-		Node* tree = new Node(temp[mid]);
+		Node *tree = new Node();
+		tree->value = temp[mid];
 
-		tree->left = BuildBalancedTree(temp, start, mid - 1);
-		tree->right = BuildBalancedTree(temp, mid + 1, SIZE);
+		tree->left = BuildBalancedTree(temp, mid - 1, start);
+		tree->right = BuildBalancedTree(temp, SIZE, mid + 1);
 
 		return tree;
 	}
@@ -341,7 +342,8 @@ int main()
 	for (int i = 0; i < SIZE; i++)
 		bt.AddNode(ar[i]);
 	bt.ShowTree();
-
+	bt.ShowArrayTree(SIZE);
+	
 
 
 	//cout << "\n" << bt.GetCount() << "\n";
