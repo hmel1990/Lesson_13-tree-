@@ -1,4 +1,6 @@
 ﻿#include <iostream>
+#include <algorithm>
+#include <random>
 using namespace std;
 
 class Tree
@@ -298,11 +300,11 @@ private:
 		int* temp = new int[SIZE];
 		AddToTemp(element, temp, count_element);
 
-		for (int i = 0; i < SIZE; i++)
+		/*for (int i = 0; i < SIZE; i++)
 		{
 			cout << "\n";
 			cout << temp[i];
-		}
+		}*/
 	
 		Clear (root);
 		BuildBalancedTree(temp, SIZE);
@@ -317,8 +319,17 @@ private:
 		Node *tree = new Node();
 		tree->value = temp[mid];
 
-		tree->left = BuildBalancedTree(temp, mid - 1, start);
-		tree->right = BuildBalancedTree(temp, SIZE, mid + 1);
+		random_device rd;
+		mt19937 generator(rd());
+		shuffle(temp, temp + SIZE, generator);
+
+		for (int i = 0; i < SIZE; ++i)
+		{
+			AddNode(temp[i]);
+		}
+
+		/*tree->left = BuildBalancedTree(temp, mid - 1, start);
+		tree->right = BuildBalancedTree(temp, SIZE, mid + 1);*/
 
 		return tree;
 	}
@@ -359,7 +370,8 @@ int main()
 		bt.AddNode(ar[i]);
 	bt.ShowTree();
 	bt.BalancedTree(SIZE);
-	
+	bt.ShowTree();
+
 
 
 	//cout << "\n" << bt.GetCount() << "\n";
